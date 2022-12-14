@@ -5,7 +5,7 @@ import datetime
 import json
 import configparser
 
-#This file generates random numbers at random time intervals and publishes them to mqtt broker
+#This app generates random numbers at random time intervals and publishes them to mqtt broker
 
 config = configparser.ConfigParser()
 config.read('config.ini')

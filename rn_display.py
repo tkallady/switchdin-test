@@ -4,7 +4,7 @@ import io
 import pickle
 import configparser
 
-#This file subscribes to the statistics calculated by 'rn_processor.py' and prints them in tabular layout
+#This app subscribes to the statistics calculated by 'rn_processor.py' and prints them in tabular layout
 
 config = configparser.ConfigParser()
 config.read('config.ini')

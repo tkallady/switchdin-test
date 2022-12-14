@@ -7,7 +7,7 @@ import pickle
 import io
 import configparser
 
-#This file takes incoming random numbers from MQTT broker, stores them, 
+#This app takes incoming random numbers from MQTT broker, stores them, 
 #resamples and averages the data and publishes back to the broker on a different
 #topic
 
