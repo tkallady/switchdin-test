@@ -1,4 +1,4 @@
-#SwitchDin coding test
+# SwitchDin coding test
 
 ## Requirements
 
