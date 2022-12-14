@@ -40,4 +40,4 @@ Running `ansible-playbook create-instances.yml` will do this, but need access ke
 ## How to view output
 
 SSH into VM (username is ec2-user)
-Run `cd ~/src & docker-compose logs -f display`
+Run `cd ~/src && docker-compose logs -f display`
