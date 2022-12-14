@@ -27,11 +27,15 @@ def on_message(client, userdata, msg):
     print(msg_obj["30_min"].to_markdown())
 
 if __name__ == "__main__":
+
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
-    try:
-        client.connect(BROKER_HOSTNAME, 1883, 60)
-    except:
-        pass
+    import time
+    while True: #This loop addresses a bug with docker-compose trying to connect before rabbitmq is ready
+        try:
+            client.connect(BROKER_HOSTNAME, 1883, 60)
+            break
+        except:
+            time.sleep(10)
     client.loop_forever()

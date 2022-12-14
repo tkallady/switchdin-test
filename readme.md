@@ -22,11 +22,12 @@ The MQTT broker is RabbitMQ, defined in `Dockerfile`
 
 ## How to run in dev
 
-Run `docker-compose up`
+Run `docker-compose up -d`
 and then
 `docker-compose logs -f display` to view output.
+Note it can take a few minutes for logs to come through.
 
-Alternatively, build and run Dockerfile (for rabbitmq), then run all three python scripts seperately
+Alternatively, build and run Dockerfile (for rabbitmq), then run all three python scripts seperately. In this case need to update BROKER_HOSTNAME in config.ini to localhost.
 
 ## How to deploy
 

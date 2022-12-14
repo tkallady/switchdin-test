@@ -39,4 +39,4 @@ services:
       - .:/usr/src
     depends_on:
       - broker
-    restart: on-failure
+    restart: always
