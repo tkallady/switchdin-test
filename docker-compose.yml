@@ -1,0 +1,42 @@
+services:
+  broker:
+    build: .
+    ports:
+      - "1883:1883"
+      - "15672:15672"
+
+  generator:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    working_dir: /usr/src
+    command: python rn_generator.py
+    volumes:
+      - .:/usr/src
+    depends_on:
+      - broker
+    restart: on-failure
+
+  processor:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    working_dir: /usr/src
+    command: python rn_processor.py
+    volumes:
+      - .:/usr/src
+    depends_on:
+      - broker
+    restart: on-failure
+
+  display:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    working_dir: /usr/src
+    command: python rn_display.py
+    volumes:
+      - .:/usr/src
+    depends_on:
+      - broker
+    restart: on-failure

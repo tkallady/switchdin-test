@@ -1,0 +1,35 @@
+- hosts: all
+  tasks:
+    - name: install system reqs
+      become: yes
+      yum:
+        name:
+          - git
+          - python-pip
+          - docker
+        state: present
+    - name: pull src
+      git:
+        repo: https://github.com/tkallady/switchdin-test.git
+        dest: ~/src
+        update: yes
+
+    - name: install pip requirements
+      pip:
+        name:
+          - docker
+          - docker-compose
+          - requests
+
+    - name: start docker service
+      become: yes
+      shell: |
+        systemctl enable docker.service
+        systemctl start docker.service
+
+    - name: deploy docker compose
+      become: yes
+      community.docker.docker_compose:
+        project_src: ~/src/
+        build: true
+      register: output

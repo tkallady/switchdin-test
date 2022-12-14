@@ -1,0 +1,52 @@
+#Based on https://www.middlewareinventory.com/blog/ansible-aws-ec2/
+
+- name: Create Ec2 instances
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    # Block is a Group of Tasks combined together
+    - name: Get Info Block
+      block:
+        - name: Get Running instance Info
+          ec2_instance_info:
+            region: ap-southeast-2
+          register: ec2info
+
+      # By specifying always on the tag,
+      # I let this block to run all the time by module_default
+      # this is for security to net create ec2 instances accidentally
+      tags: ["always", "getinfoonly"]
+    - name: Create EC2 Block
+      block:
+        - name: Launch ec2 instances
+          amazon.aws.ec2_instance:
+            name: compute_instance
+            image_id: ami-06bb074d1e196d0d4
+            region: ap-southeast-2
+            key_name: kp
+            security_group: sg-0a1029fda55f7cf14
+            instance_type: t2.micro
+            wait: yes
+            wait_timeout: 500
+            network:
+              assign_public_ip: true
+            count: 2
+            vpc_subnet_id: subnet-9d4ec1c5
+            state: running
+          register: ec2
+        - name: Add instance to host group
+          add_host:
+            hostname: "{{ item.public_ip_address }}"
+            groupname: launched
+          loop: "{{ ec2.instances }}"
+        - name: Wait for SSH to come up
+          local_action:
+            module: wait_for
+            host: "{{ item.public_ip_address }}"
+            port: 22
+            delay: 10
+            timeout: 120
+          loop: "{{ ec2.instances }}"
+      # By specifying never on the tag of this block,
+      # I let this block to run only when explicitely being called
+      tags: ["never", "ec2-create"]
